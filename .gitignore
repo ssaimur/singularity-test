@@ -1,0 +1,9 @@
+node_modules
+dist
+.husky
+.vscode
+environment
+
+database/config.json
+docs/swagger.json
+assets

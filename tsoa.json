@@ -1,0 +1,31 @@
+{
+  "entryFile": "src/index.ts",
+  "noImplicitAdditionalProperties": "throw-on-extras",
+  "controllerPathGlobs": ["src/controllers/**.controller.ts"],
+  "spec": {
+    "spec": {
+      "info": {
+        "title": "Singularity",
+        "version": "1.0.0",
+        "description": "API Documentation for Singularity."
+      }
+    },
+    "outputDirectory": "docs",
+    "specVersion": 3,
+    "basePath": "/api",
+    "securityDefinitions": {
+      "Auth": {
+        "scheme": "bearer",
+        "type": "http",
+        "bearerFormat": "JWT"
+      }
+    }
+  },
+  "routes": {
+    "routesDir": "dist/routes",
+    "basePath": "/api",
+    "authenticationModule": "./src/authentication.ts"
+  },
+  "ignore": ["**/node_modules/**"],
+  "experimentalDecorators": true
+}
