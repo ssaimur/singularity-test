@@ -51,8 +51,8 @@ export class AppService {
           },
         },
       ],
-      group: ['shift.name'], // Grouping by shift_id
-      raw: true, // Get raw data instead of Sequelize instances
+      group: ['shift.name'],
+      raw: true,
     });
   }
 }
