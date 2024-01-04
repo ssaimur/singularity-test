@@ -4,7 +4,7 @@ import { HttpStatusCode } from './httpStatusCode';
 /**
  * All error handlings
  */
-export const SUCCESSE = HttpStatusCode.OK; // 200
+export const SUCCESS = HttpStatusCode.OK; // 200
 export const ERROR_UNAUTHORIZED = HttpStatusCode.UNAUTHORIZED; // 401
 export const ERROR_UNPROCESSABLE_ENTITY = HttpStatusCode.UNPROCESSABLE_ENTITY; // 422
 export const ERROR_BAD_REQUEST = HttpStatusCode.BAD_REQUEST; // 400

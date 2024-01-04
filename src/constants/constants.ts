@@ -10,3 +10,12 @@ export const DATE_FORMAT = 'DD/MM/YYYY HH:mm:ss';
 export const DATE_FORMAT_WITH_AM = 'DD/MM/YYYY hh:mm:ss A';
 export const DATE_FORMAT_TO_SHOW = 'DD MMMM YYYY';
 export const WEEK_DAYS = ['saturday', 'sunday', 'monday', 'tuesday', 'wednesday', 'thursday', 'friday'];
+export const ADMIN_ROLE_ID = 1;
+export const SUPERVISOR_ROLE_ID = 2;
+export const EMPLOYEE_ROLE_ID = 3;
+
+export enum EUserUniqueFields {
+  userName = 'userName',
+  phoneNumber = 'phoneNumber',
+  email = 'email',
+}

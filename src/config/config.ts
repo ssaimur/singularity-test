@@ -14,7 +14,7 @@ const config = {
 
   isLocal: process.env.IS_LOCAL,
 
-  cors: process.env.CORS || 'http://localhost:8001',
+  cors: process.env.CORS || 'http://localhost:3000',
 
   postgresConfig: {
     host: process.env.POSTGRES_HOST || '',

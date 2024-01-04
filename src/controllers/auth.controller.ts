@@ -1,16 +1,12 @@
 import { Controller, Post, Route, SuccessResponse, Tags, Response, Body } from 'tsoa';
-import { DefaultErrorBody, ERROR_BAD_REQUEST, ERROR_INTERNAL_SERVER_ERROR, ERROR_NOT_FOUND, SUCCESSE } from '../handles/errorTypes';
-// import config from '../config/config';
-// import { sendOtp } from '../common/helpers/mailersendHelper';
+import { AppError, DefaultErrorBody, ERROR_BAD_REQUEST, ERROR_INTERNAL_SERVER_ERROR, ERROR_NOT_FOUND, SUCCESS } from '../handles/errorTypes';
 import tryCatchHandler from '../handles/tryCatchHandler';
-import { IReqRegisterUser, IResRegister } from '../types/user.type';
+import { IReqLogin, IReqRegisterUser, IResLogin } from '../types/user.type';
 import { UsersService } from '../services/user.service';
 import sequelize from '../config/dataSource';
 import { User } from '../models';
 import { responseWithResultToken } from '../helpers/tokenHelper';
-
-// const expiredSeconds: any = config.otp.expiredSeconds;
-// const getNewOtpExpiredTime = () => new Date(new Date().getTime() + 1000 * expiredSeconds);
+import { MESSAGES } from '../constants/messages';
 
 @Tags('Auth')
 @Route('auth')
@@ -18,15 +14,32 @@ import { responseWithResultToken } from '../helpers/tokenHelper';
 @Response<DefaultErrorBody>(ERROR_BAD_REQUEST, 'Bad Request')
 @Response<DefaultErrorBody>(ERROR_NOT_FOUND, 'Not Found')
 export class AuthController extends Controller {
-  @SuccessResponse(SUCCESSE, 'Registered')
+  private userService = new UsersService();
+
+  @SuccessResponse(SUCCESS, 'Registered')
   @Post('register')
-  public async registerUser(@Body() reqBody: IReqRegisterUser): Promise<IResRegister> {
-    const userService = new UsersService();
+  public async registerUser(@Body() reqBody: IReqRegisterUser): Promise<IResLogin> {
     return tryCatchHandler(async () => {
       return await sequelize.transaction(async (transaction) => {
-        const createdUser = await userService.createUser(reqBody as User, transaction);
+        const createdUser = await this.userService.createUser(reqBody as User, transaction);
 
         return responseWithResultToken(createdUser, transaction);
+      });
+    });
+  }
+
+  @SuccessResponse(SUCCESS, 'Logged in')
+  @Post('login')
+  public async login(@Body() reqBody: IReqLogin): Promise<IResLogin> {
+    return tryCatchHandler(async () => {
+      return await sequelize.transaction(async (transaction) => {
+        const user = await this.userService.login(reqBody, transaction);
+
+        if (!user) {
+          throw new AppError(ERROR_BAD_REQUEST, MESSAGES.loginFailed);
+        }
+
+        return responseWithResultToken(user, transaction);
       });
     });
   }

@@ -32,15 +32,7 @@ appDataSource
     app.use(cookieParser());
 
     // Cors
-    app.use(
-      cors({
-        origin: config.cors.split(','),
-        credentials: true,
-        allowedHeaders: ['Accept', 'Content-Type', 'Authorization', 'local-time'],
-        methods: 'GET,HEAD,PUT,PATCH,POST,DELETE',
-        preflightContinue: false,
-      }),
-    );
+    app.use(cors());
 
     // Routes
     // root

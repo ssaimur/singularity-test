@@ -64,20 +64,20 @@ export default class User extends Model<User> implements User {
   @ForeignKey(() => UserRole)
   role_id: number;
 
+  @AllowNull(false)
   @Column({
     type: DataType.STRING,
     unique: true,
   })
   phoneNumber: string;
 
-  @AllowNull
   @Column({
     type: DataType.STRING,
     unique: true,
   })
   email?: string;
 
-  @Default('')
+  @AllowNull(false)
   @Column(DataType.STRING)
   fullName: string;
 

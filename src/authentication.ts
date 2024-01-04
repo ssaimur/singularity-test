@@ -1,7 +1,7 @@
 import * as express from 'express';
 import * as jwt from 'jsonwebtoken';
 import config from './config/config';
-import { AppError, ERROR_UNAUTHENTICATION } from './handles/errorTypes';
+import { AppError, ERROR_UNAUTHORIZED } from './handles/errorTypes';
 import { MESSAGES } from './constants/messages';
 
 export function expressAuthentication(request: express.Request, securityName: string, _scopes?: string[]): Promise<any> {
@@ -16,22 +16,22 @@ export function expressAuthentication(request: express.Request, securityName: st
 
     return new Promise((resolve, reject) => {
       if (!access_token) {
-        reject(new AppError(ERROR_UNAUTHENTICATION, MESSAGES.auth.unauthenticated.emptyToken));
+        reject(new AppError(ERROR_UNAUTHORIZED, MESSAGES.auth.unauthenticated.emptyToken));
       }
 
       jwt.verify(access_token, config.secrets.session, function (err: any, decoded: any) {
         if (err) {
           if (err.expiredAt || err.date) {
-            reject(new AppError(ERROR_UNAUTHENTICATION, MESSAGES.auth.unauthenticated.expiredToken));
+            reject(new AppError(ERROR_UNAUTHORIZED, MESSAGES.auth.unauthenticated.expiredToken));
           } else {
-            reject(new AppError(ERROR_UNAUTHENTICATION, MESSAGES.auth.unauthenticated.invalidToken));
+            reject(new AppError(ERROR_UNAUTHORIZED, MESSAGES.auth.unauthenticated.invalidToken));
           }
         } else {
           const expTime = decoded.exp * 1000;
           const isExpired = expTime < new Date().getTime();
 
           if (isExpired) {
-            reject(new AppError(ERROR_UNAUTHENTICATION, MESSAGES.auth.unauthenticated.expiredToken));
+            reject(new AppError(ERROR_UNAUTHORIZED, MESSAGES.auth.unauthenticated.expiredToken));
           }
 
           resolve(decoded);
